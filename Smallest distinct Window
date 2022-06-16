@@ -1,0 +1,46 @@
+Smallest distinct window 
+
+Given a string 's'. The task is to find the smallest window length that contains all the characters of the given string at least one time.
+For eg. A = aabcbcdbca, then the result would be 4 as of the smallest window will be dbca.
+
+//explanation:
+AABBBCBBAC
+      ✔ ✔   
+A:1
+B:1
+C:1
+window 0:5 - {have == need}
+window 2:9 - {have == need}
+window 8:10 - {have == need}
+
+def smallestWindow(s):
+    t = ''.join(set(s))
+    if t == "": return 0
+
+    countT, window = {}, {}
+    # Get the count of each distinct 
+    for c in t:
+        countT[c] = 1 + countT.get(c, 0)
+
+    have, need = 0, len(countT)
+    res, resLen = [-1, -1], float("infinity")
+    l = 0
+    for r in range(len(s)):
+        c = s[r]
+        window[c] = 1 + window.get(c, 0)
+
+        if c in countT and window[c] == countT[c]:
+            have += 1
+
+        while have == need:
+            # update our result
+            if (r - l + 1) < resLen:
+                res = [l, r]
+                resLen = (r - l + 1)
+            # pop from the left of our window
+            window[s[l]] -= 1
+            if s[l] in countT and window[s[l]] < countT[s[l]]:
+                have -= 1
+            l += 1
+    l, r = res
+    return len(s[l:r+1]) if resLen != float("infinity") else 0
