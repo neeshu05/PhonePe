@@ -1,0 +1,19 @@
+PhonePe - sde1
+There is a restaurant and restaurant serves n dishes, each dish has a quality and a price.
+A dish is considered better if the quality and price of it is higher than other dish.
+Given n dishes find minimum number of changes in quality remove the above condition for any pair of dish.
+
+concept - //longest increasing subsequence
+
+def restaurant(dishes,quality,price):
+nums = list(zip(dishes,quality,price))
+def helper(indx,prev):
+	if indx == n:
+	return 0
+
+	notpick = helper(indx + 1,prev) 
+	pick = 0
+	if prev == -1 or (nums[indx][1] > nums[prev][1] and nums[indx][2] > nums[prev][2]):
+		pick = 1 + helper(indx+1,indx)
+	return max(pick,notpick)
+return n - helper(0,-1)
