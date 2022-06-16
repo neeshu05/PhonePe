@@ -1,0 +1,40 @@
+😊😊😊😊😊
+Given an m x n matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'.
+
+A region is captured by flipping all 'O's into 'X's in that surrounded region.
+
+
+def solve(self, board: List[List[str]]) -> None:    
+    m,n = len(board), len(board[0])
+
+    def dfs(grid,i,j):
+        if i>=0 and j>=0 and i<m and j<n:
+            if grid[i][j] == 'O':
+                grid[i][j] = 'T'
+                dfs(grid,i,j-1)
+                dfs(grid,i,j+1)
+                dfs(grid,i-1,j)
+                dfs(grid,i+1,j)
+
+    # left column and right column
+    for i in range(0,m):
+        if board[i][0] == 'O':
+            dfs(board,i,0)
+        if board[i][n-1] == 'O':
+            dfs(board,i,n-1)
+
+    # top row and bottom row
+    for j in range(0,n):
+        if board[0][j] == 'O':
+            dfs(board,0,j)
+        if board[m-1][j] == 'O':
+            dfs(board,m-1,j)
+
+    print(board)
+
+    for i in range(0,m):
+        for j in range(0,n):
+            if board[i][j] == 'O':
+                board[i][j] = 'X'
+            elif board[i][j] == 'T':
+                board[i][j] = 'O'
