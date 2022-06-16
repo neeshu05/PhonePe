@@ -6,6 +6,7 @@ To perform a flood fill, consider the starting pixel, plus any pixels connected 
 plus any pixels connected 4-directionally to those pixels (also with the same color), and so on. Replace the color of all of the aforementioned pixels with color.
 
 //
+#DFS
 n,m = len(image),len(image[0])
 def helper(image,r,c,color):
     if r<0 or c<0 or r == len(image) or c == len(image[0]) or image[r][c] != color or image[r][c] == newColor:
@@ -18,4 +19,27 @@ def helper(image,r,c,color):
     helper(image,r,c-1,color)
     #return image
 helper(image,sr,sc,image[sr][sc])
+return image
+
+#BFS
+def valid(r,c):
+    return r >= 0 and c >= 0 and r < len(image) and c < len(image[0]) and image[r][c] == color
+queue = deque()
+color = image[sr][sc]
+queue.append((sr,sc))
+visited = set()
+while queue:
+    r,c = queue.popleft()
+    if image[r][c] == color:
+        #print('no')
+        image[r][c] = newColor
+    visited.add((r,c))
+    for dr,dc in [[-1,0],[1,0],[0,1],[0,-1]]:
+        row = dr + r
+        col = dc + c
+        if valid(row,col) and (row,col) not in visited:
+            #print('yes')
+            #print(row,col)
+            queue.append((row,col))
+
 return image
